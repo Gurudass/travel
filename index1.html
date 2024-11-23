@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Disable Save Video Option</title>
+    <style>
+        .video-container{
+            width: 200px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="video-container">
+        <!-- Video element -->
+        <video id="video" style="pointer-events: none; width: 100%;">
+            <source src="assets/ommshreesaimarbles.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+
+        <!-- Transparent overlay -->
+        <div class="video-overlay" oncontextmenu="return false;"></div>
+    </div>
+
+    <!-- Custom controls -->
+    <div class="controls">
+        <button onclick="playVideo()">Play</button>
+        <button onclick="pauseVideo()">Pause</button>
+    </div>
+
+    <script>
+        // JavaScript for custom controls
+        const video = document.getElementById('video');
+
+        // Play the video
+        function playVideo() {
+            video.play();
+        }
+
+        // Pause the video
+        function pauseVideo() {
+            video.pause();
+        }
+    </script>
+</body>
+</html>

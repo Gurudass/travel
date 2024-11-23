@@ -1,0 +1,65 @@
+function generatePDF() {
+    const element = document.getElementById('content-to-pdf');
+
+    // Generate PDF with html2pdf
+    html2pdf()
+        .from(element)
+        .set({
+            margin: 0,  // Zero margin
+            filename: 'Travel_Magica_Package_Details.pdf',
+            image: { type: 'jpeg', quality: 1.0 },
+            html2canvas: {
+                scale: 0.90, // Slightly smaller scale for tighter layout
+                scrollX: false,
+                scrollY: false,
+                useCORS: true, // Allow cross-origin images
+                allowTaint: false // Avoid taint issues
+            },
+            jsPDF: {
+                unit: 'px',
+                format: [element.scrollWidth, element.scrollHeight],
+                orientation: 'portrait'
+            }
+        })
+        .save();
+}
+
+// Show a custom popup when Ctrl+P is pressed
+document.addEventListener('keydown', function (event) {
+    if (event.ctrlKey && event.key === 'p') {
+        event.preventDefault(); // Prevent the default print dialog
+
+        // Create the popup
+        const popup = document.createElement('div');
+        popup.id = 'pdf-popup';
+        popup.style.position = 'fixed';
+        popup.style.top = '50%';
+        popup.style.left = '50%';
+        popup.style.transform = 'translate(-50%, -50%)';
+        popup.style.backgroundColor = 'white';
+        popup.style.padding = '20px';
+        popup.style.boxShadow = '0 0 10px rgba(0, 0, 0, 0.1)';
+        popup.style.textAlign = 'center';
+        popup.style.zIndex = '9999';
+
+        popup.innerHTML = `
+            <h2>Do you want to download the PDF?</h2>
+            <button id="download-pdf" style="padding: 10px 20px; margin: 10px; background-color: #4CAF50; color: white;">Download PDF</button>
+            <button id="cancel" style="padding: 10px 20px; margin: 10px; background-color: #f44336; color: white;">Cancel</button>
+        `;
+
+        // Append the popup to the body
+        document.body.appendChild(popup);
+
+        // Download PDF when the "Download PDF" button is clicked
+        document.getElementById('download-pdf').onclick = function () {
+            generatePDF();
+            document.body.removeChild(popup); // Remove popup after download
+        };
+
+        // Close the popup when the "Cancel" button is clicked
+        document.getElementById('cancel').onclick = function () {
+            document.body.removeChild(popup); // Remove the popup
+        };
+    }
+});
